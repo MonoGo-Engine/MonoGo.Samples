@@ -1,0 +1,65 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:MonoGo.Pipeline.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Content-Demo.npl
+/importer:ResourceInfoImporter
+/processor:PassThroughProcessor
+/build:Content-Demo.npl
+#begin Demo/Misc.spritegroup
+/importer:SpriteGroupImporter
+/processor:SpriteGroupProcessor
+/build:Demo/Misc.spritegroup
+
+#begin Demo/Maps/Tilesets/grass.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Demo/Maps/Tilesets/grass.png
+
+#begin Demo/Maps/Templates/TemplatesTileset/bot.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Demo/Maps/Templates/TemplatesTileset/bot.png
+
+#begin Demo/Maps/Templates/TemplatesTileset/player.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Demo/Maps/Templates/TemplatesTileset/player.png
+
+#begin Demo/Maps/Test.tmx
+/importer:TiledMapImporter
+/processor:PassThroughProcessor
+/build:Demo/Maps/Test.tmx
