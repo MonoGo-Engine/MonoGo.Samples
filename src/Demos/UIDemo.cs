@@ -155,7 +155,7 @@ namespace MonoGo.Samples.Demos
                     panel.StyleSheet = new StyleSheet(); // Empty StyleSheet to hide the panel.
                     var welcomeText = new Paragraph(@$"Welcome to ${{FC:FFDB5F}}Mono${{FC:e60000}}Go${{RESET}}!
 
-A Cross-Platform .NET 8 C# 2D game engine build ontop of ${{FC:e60000}}MonoGame${{RESET}} and ${{FC:e64600}}Monofoxe${{RESET}}.
+A Cross-Platform .NET 8 C# 2D game engine build ontop of ${{FC:e60000}}MonoGame${{RESET}}.
 
 Please click the ${{FC:df00e6}}GUI.Next${{RESET}} button at the top to see more GUI-DEMOS or the ${{FC:FFDB5F}}Next${{RESET}} button below to see more SAMPLE-DEMOS of the engine.
 
