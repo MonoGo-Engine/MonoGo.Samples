@@ -7,7 +7,7 @@ namespace MonoGo.Samples.Misc
 	/// <summary>
 	/// Basic position component. 
 	/// </summary>
-	public class PositionComponent : Component, IMovable
+	public class PositionComponent : Component, IAmMovable
 	{
 		/// <summary>
 		/// Entity position on the scene.
