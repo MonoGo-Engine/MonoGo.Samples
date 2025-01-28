@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGo.Engine;
 using MonoGo.Engine.Drawing;
+using MonoGo.Engine.Enums;
 using MonoGo.Engine.Resources;
 using MonoGo.Resources;
 using MonoGo.Tiled;
@@ -34,13 +35,13 @@ namespace MonoGo.Samples
         /// </summary>
         protected override void LoadContent()
         {
-            base.LoadContent();
+            LoadEngineContent();
 
             new DirectoryResourceBox<TiledMap>("Maps", "Demo/Maps");
             new SpriteGroupResourceBox("DemoSprites", "Demo/Misc");
 
             var fontSprite = ResourceHub.GetResource<Sprite>("DemoSprites", "Font");
-            var fontBox = ResourceHub.GetResourceBox("Fonts") as ResourceBox<IFont>;
+            var fontBox = ResourceHub.GetResourceBox(nameof(EngineResources.Fonts)) as ResourceBox<IFont>;
             fontBox.AddResource("FancyFont", new TextureFont(fontSprite, 1, 1, TextureFont.Ascii, false));
         }
 
