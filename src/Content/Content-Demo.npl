@@ -1,5 +1,10 @@
 {
   "root": "",
+  "intermediateDir": "obj",
+  "outputDir": "bin",
+  "platform": "DesktopGL",
+  "graphicsProfile": "Reach",
+  "compress": "true",
   "references": [
     "MonoGo.Pipeline.dll"
   ],
@@ -8,7 +13,7 @@
       "path": "$Content-Demo.npl",
       "recursive": "False",
       "action": "build",
-      "importer": "ResourceInfoImporter",
+      "importer": "NPLResourceInfoImporter",
       "processor": "PassThroughProcessor",
       "watch": [
         "Demo/*"
@@ -21,8 +26,8 @@
       "importer": "SpriteGroupImporter",
       "processor": "SpriteGroupProcessor",
       "watch": [
-        "Demo/Misc/*.png",
-        "Demo/Misc/*.json"
+        "Misc/*.png",
+        "Misc/*.json"
       ]
     },
     "tiledMaps": {
@@ -32,11 +37,11 @@
       "importer": "TiledMapImporter",
       "processor": "PassThroughProcessor",
       "watch": [
-        "Demo/Maps/Tilesets/*.tsx",
-        "Demo/Maps/Tilesets/*.png",
-        "Demo/Maps/Templates/*.tsx",
-        "Demo/Maps/Templates/*.tx",
-        "Demo/Maps/Templates/*.png"
+        "Tilesets/*.tsx",
+        "Tilesets/*.png",
+        "Templates/*.tsx",
+        "Templates/*.tx",
+        "Templates/*.png"
       ]
     },
     "tiledMapTextures": {
@@ -53,8 +58,7 @@
         "ResizeToPowerOfTwo": "False",
         "MakeSquare": "False",
         "TextureFormat": "Color"
-      },
-      "watch": []
+      }
     }
   }
 }
