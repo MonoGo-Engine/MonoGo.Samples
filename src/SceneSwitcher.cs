@@ -23,7 +23,7 @@ namespace MonoGo.Samples
             "Camera > ${FC:96FF5F}Zoom${RESET}: ${FC:FFDB5F}" + CameraController.ZoomInButton + "${RESET} / ${FC:FFDB5F}" + CameraController.ZoomOutButton + "${RESET}" + Environment.NewLine +
             "Demo > Restart: ${FC:FFDB5F}" + _restartButton + "${RESET} GUI: ${FC:FFDB5F}" + _toggleUIButton + "${RESET} Fullscreen: ${FC:FFDB5F}" + _toggleFullscreenButton + "${RESET} Exit: ${FC:FFDB5F}" + _exitButton;
 
-        public static Panel DescriptionPanel;
+        public static Panel DescriptionPanel = new(null!);
 
         const Buttons _prevSceneButton = Buttons.Q;
         const Buttons _nextSceneButton = Buttons.E;
@@ -182,7 +182,7 @@ namespace MonoGo.Samples
                     logo.Size.SetPixels(logoTexture.Width, logoTexture.Height);
                     logo.Offset.X.SetPixels(10);
 
-                    var leftButton = new Button("P")
+                    var leftButton = new Button("<")
                     {
                         Anchor = Anchor.AutoInlineLTR
                     };
@@ -194,7 +194,7 @@ namespace MonoGo.Samples
                         logo.OverrideStyles.Icon.Texture = ColorGrading.CurrentLUT[0].Texture;
                     };
 
-                    var rightButton = new Button("N")
+                    var rightButton = new Button(">")
                     {
                         Anchor = Anchor.AutoInlineLTR
                     };
@@ -251,7 +251,7 @@ namespace MonoGo.Samples
                     logo.Size.SetPixels(64, 64);
                     logo.Offset.X.SetPixels(10);
 
-                    var leftButton = new Button("P")
+                    var leftButton = new Button("<")
                     {
                         Anchor = Anchor.AutoInlineLTR
                     };
@@ -262,7 +262,7 @@ namespace MonoGo.Samples
                         Bloom.PreviousPreset();
                     };
 
-                    var rightButton = new Button("N")
+                    var rightButton = new Button(">")
                     {
                         Anchor = Anchor.AutoInlineLTR
                     };
