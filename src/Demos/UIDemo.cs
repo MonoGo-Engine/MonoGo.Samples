@@ -7,6 +7,7 @@ using MonoGo.Iguina;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using Color = Iguina.Defs.Color;
@@ -39,7 +40,7 @@ namespace MonoGo.Samples.Demos
 
             _panels.Clear();
 
-            var system = GUIMgr.System;
+            var _system = GUIMgr.System;
 
             // load some alt stylesheets that are not loaded by default from the system stylesheet
             var hProgressBarAltStyle = StyleSheet.LoadFromJsonFile(Path.Combine(GUIMgr.ThemeActiveFolder, "Styles", "progress_bar_horizontal_alt.json"));
@@ -54,7 +55,7 @@ namespace MonoGo.Samples.Demos
 
             // create top panel
             int topPanelHeight = 65;
-            Panel topPanel = new(system, null!)
+            Panel topPanel = new(_system, null!)
             {
                 Identifier = "Top Panel",
                 Anchor = Anchor.TopCenter
@@ -63,7 +64,7 @@ namespace MonoGo.Samples.Demos
             AddGUIEntity(topPanel);
 
             // add previous example button
-            _previousExampleButton = new(system, "<- GUI.Back")
+            _previousExampleButton = new(_system, "<- GUI.Back")
             {
                 Anchor = Anchor.TopCenter
             };
@@ -74,7 +75,7 @@ namespace MonoGo.Samples.Demos
 
             // add button to enable debug mode
             {
-                Button button = new(system, "Debug Mode")
+                Button button = new(_system, "Debug Mode")
                 {
                     Anchor = Anchor.TopCenter,
                     ToggleCheckOnClick = true
@@ -87,7 +88,7 @@ namespace MonoGo.Samples.Demos
 
             // add button to the GitHub repo
             {
-                Button button = new(system, "GitHub")
+                Button button = new(_system, "GitHub")
                 {
                     Anchor = Anchor.TopCenter
                 };
@@ -105,7 +106,7 @@ namespace MonoGo.Samples.Demos
             }
 
             // theme switcher drop down.
-            DropDown themeDropDown = new(system, listPanelCentered, listItemCentered)
+            DropDown themeDropDown = new(_system, listPanelCentered, listItemCentered)
             {
                 Identifier = "Theme Switcher",
                 Anchor = Anchor.TopCenter,
@@ -124,7 +125,7 @@ namespace MonoGo.Samples.Demos
             topPanel.AddChild(themeDropDown);
 
             // add next example button
-            _nextExampleButton = new(system, "GUI.Next ->")
+            _nextExampleButton = new(_system, "GUI.Next ->")
             {
                 Anchor = Anchor.TopCenter
             };
@@ -161,7 +162,7 @@ namespace MonoGo.Samples.Demos
                     // add title and text
                     var panel = CreateDemoContainer(null, new Point(1200, -1));
                     panel.StyleSheet = new StyleSheet(); // Empty StyleSheet to hide the panel.
-                    var welcomeText = new Paragraph(system, @$"Welcome to ${{FC:FFDB5F}}Mono${{FC:e60000}}Go${{RESET}}!
+                    var welcomeText = new Paragraph(_system, @$"Welcome to ${{FC:FFDB5F}}Mono${{FC:e60000}}Go${{RESET}}!
 
 A Cross-Platform .NET 8 C# 2D game engine build ontop of ${{FC:e60000}}MonoGame${{RESET}}.
 
@@ -172,7 +173,7 @@ Stay tuned for more things to come! (probably ${{FC:f8c102}}{smileyIcon}${{RESET
                     welcomeText.OverrideStyles.FontSize = 28;
                     panel.AddChild(logo);
                     panel.AddChild(welcomeText);
-                    var version = new Paragraph(system, "${FC:FFDB5F}v" + Assembly.GetAssembly(typeof(Engine.EC.Entity)).GetName().Version + "${RESET}")
+                    var version = new Paragraph(_system, "${FC:FFDB5F}v" + Assembly.GetAssembly(typeof(Engine.EC.Entity)).GetName().Version + "${RESET}")
                     {
                         Anchor = Anchor.AutoRTL
                     };
@@ -183,7 +184,7 @@ Stay tuned for more things to come! (probably ${{FC:f8c102}}{smileyIcon}${{RESET
                 Panel CreateDemoContainer(string demoTitle, Point size)
                 {
                     // create panel
-                    var panel = new Panel(system);
+                    var panel = new Panel(_system);
                     panel.Size.SetPixels(size.X, size.Y);
                     panel.Anchor = Anchor.Center;
                     panel.AutoHeight = true;
@@ -194,8 +195,8 @@ Stay tuned for more things to come! (probably ${{FC:f8c102}}{smileyIcon}${{RESET
                     if (demoTitle != null)
                     {
                         // add title and underline
-                        panel.AddChild(new Title(system, demoTitle) { Anchor = Anchor.AutoCenter });
-                        panel.AddChild(new HorizontalLine(system));
+                        panel.AddChild(new Title(_system, demoTitle) { Anchor = Anchor.AutoCenter });
+                        panel.AddChild(new HorizontalLine(_system));
                     }
 
                     // return panel
@@ -205,58 +206,58 @@ Stay tuned for more things to come! (probably ${{FC:f8c102}}{smileyIcon}${{RESET
                 // anchors
                 {
                     var panel = CreateDemoContainer("Anchors", new Point(780, 1));
-                    panel.AddChild(new Paragraph(system, @"Controls are positioned using Anchors. An Anchor can be a pre-defined position on the parent control, like Top-Left, or Center."));
+                    panel.AddChild(new Paragraph(_system, @"Controls are positioned using Anchors. An Anchor can be a pre-defined position on the parent control, like Top-Left, or Center."));
 
-                    var anchorsPanel = new Panel(system);
+                    var anchorsPanel = new Panel(_system);
                     anchorsPanel.Size.X.SetPercents(100f);
                     anchorsPanel.Size.Y.SetPixels(400);
                     anchorsPanel.Anchor = Anchor.AutoCenter;
                     panel.AddChild(anchorsPanel);
 
-                    anchorsPanel.AddChild(new Paragraph(system, "TopLeft") { Anchor = Anchor.TopLeft });
-                    anchorsPanel.AddChild(new Paragraph(system, "TopRight") { Anchor = Anchor.TopRight });
-                    anchorsPanel.AddChild(new Paragraph(system, "TopCenter") { Anchor = Anchor.TopCenter });
-                    anchorsPanel.AddChild(new Paragraph(system, "BottomLeft") { Anchor = Anchor.BottomLeft });
-                    anchorsPanel.AddChild(new Paragraph(system, "BottomRight") { Anchor = Anchor.BottomRight });
-                    anchorsPanel.AddChild(new Paragraph(system, "BottomCenter") { Anchor = Anchor.BottomCenter });
-                    anchorsPanel.AddChild(new Paragraph(system, "CenterLeft") { Anchor = Anchor.CenterLeft });
-                    anchorsPanel.AddChild(new Paragraph(system, "CenterRight") { Anchor = Anchor.CenterRight });
-                    anchorsPanel.AddChild(new Paragraph(system, "Center") { Anchor = Anchor.Center });
+                    anchorsPanel.AddChild(new Paragraph(_system, "TopLeft") { Anchor = Anchor.TopLeft });
+                    anchorsPanel.AddChild(new Paragraph(_system, "TopRight") { Anchor = Anchor.TopRight });
+                    anchorsPanel.AddChild(new Paragraph(_system, "TopCenter") { Anchor = Anchor.TopCenter });
+                    anchorsPanel.AddChild(new Paragraph(_system, "BottomLeft") { Anchor = Anchor.BottomLeft });
+                    anchorsPanel.AddChild(new Paragraph(_system, "BottomRight") { Anchor = Anchor.BottomRight });
+                    anchorsPanel.AddChild(new Paragraph(_system, "BottomCenter") { Anchor = Anchor.BottomCenter });
+                    anchorsPanel.AddChild(new Paragraph(_system, "CenterLeft") { Anchor = Anchor.CenterLeft });
+                    anchorsPanel.AddChild(new Paragraph(_system, "CenterRight") { Anchor = Anchor.CenterRight });
+                    anchorsPanel.AddChild(new Paragraph(_system, "Center") { Anchor = Anchor.Center });
                 }
 
                 // auto anchors
                 {
                     var panel = CreateDemoContainer("Auto Anchors", new Point(750, 1));
-                    panel.AddChild(new Paragraph(system,
+                    panel.AddChild(new Paragraph(_system,
                         @"Previously we saw regular Anchors. Now its time to explore the Automatic anchors."));
 
-                    panel.AddChild(new RowsSpacer(system));
-                    var anchorsPanel = new Panel(system);
+                    panel.AddChild(new RowsSpacer(_system));
+                    var anchorsPanel = new Panel(_system);
                     anchorsPanel.Size.X.SetPercents(100f);
                     anchorsPanel.AutoHeight = true;
                     anchorsPanel.Anchor = Anchor.AutoCenter;
                     panel.AddChild(anchorsPanel);
 
                     {
-                        anchorsPanel.AddChild(new Paragraph(system, "AutoLTR first item.") { Anchor = Anchor.AutoLTR });
-                        anchorsPanel.AddChild(new Paragraph(system, "AutoLTR second item. Will be in a different row.") { Anchor = Anchor.AutoLTR });
-                        var btn = anchorsPanel.AddChild(new Button(system, "Button set to AutoLTR too.") { Anchor = Anchor.AutoLTR });
+                        anchorsPanel.AddChild(new Paragraph(_system, "AutoLTR first item.") { Anchor = Anchor.AutoLTR });
+                        anchorsPanel.AddChild(new Paragraph(_system, "AutoLTR second item. Will be in a different row.") { Anchor = Anchor.AutoLTR });
+                        var btn = anchorsPanel.AddChild(new Button(_system, "Button set to AutoLTR too.") { Anchor = Anchor.AutoLTR });
                         btn.Size.X.SetPixels(400);
                     }
-                    anchorsPanel.AddChild(new HorizontalLine(system));
+                    anchorsPanel.AddChild(new HorizontalLine(_system));
                     {
-                        anchorsPanel.AddChild(new Paragraph(system, "This item is AutoRTL.") { Anchor = Anchor.AutoRTL });
-                        anchorsPanel.AddChild(new Paragraph(system, "AutoRTL second item. Will be in a different row.") { Anchor = Anchor.AutoRTL });
-                        var btn = anchorsPanel.AddChild(new Button(system, "Button set to AutoRTL too.") { Anchor = Anchor.AutoRTL });
+                        anchorsPanel.AddChild(new Paragraph(_system, "This item is AutoRTL.") { Anchor = Anchor.AutoRTL });
+                        anchorsPanel.AddChild(new Paragraph(_system, "AutoRTL second item. Will be in a different row.") { Anchor = Anchor.AutoRTL });
+                        var btn = anchorsPanel.AddChild(new Button(_system, "Button set to AutoRTL too.") { Anchor = Anchor.AutoRTL });
                         btn.Size.X.SetPixels(400);
                     }
-                    anchorsPanel.AddChild(new HorizontalLine(system));
+                    anchorsPanel.AddChild(new HorizontalLine(_system));
                     {
                         {
-                            anchorsPanel.AddChild(new Paragraph(system, "We also have inline anchors that arrange entities next to each other, and only break line when need to. For example, AutoInlineLTR buttons:") { Anchor = Anchor.AutoLTR });
+                            anchorsPanel.AddChild(new Paragraph(_system, "We also have inline anchors that arrange entities next to each other, and only break line when need to. For example, AutoInlineLTR buttons:") { Anchor = Anchor.AutoLTR });
                             for (int i = 0; i < 5; ++i)
                             {
-                                var btn = anchorsPanel.AddChild(new Button(system, "AutoInlineLTR") { Anchor = Anchor.AutoInlineLTR });
+                                var btn = anchorsPanel.AddChild(new Button(_system, "AutoInlineLTR") { Anchor = Anchor.AutoInlineLTR });
                                 btn.Size.X.SetPixels(200);
                             }
                         }
@@ -266,60 +267,60 @@ Stay tuned for more things to come! (probably ${{FC:f8c102}}{smileyIcon}${{RESET
                 // panels
                 {
                     var panel = CreateDemoContainer("Panels", new Point(650, 1));
-                    panel.AddChild(new Paragraph(system,
+                    panel.AddChild(new Paragraph(_system,
                         @"Panels are simple containers for entities. They can have graphics, like the panel this text is in, or be transparent and used only for grouping."));
-                    panel.AddChild(new HorizontalLine(system));
-                    panel.AddChild(new RowsSpacer(system));
+                    panel.AddChild(new HorizontalLine(_system));
+                    panel.AddChild(new RowsSpacer(_system));
                     {
-                        var panelLeft = new Panel(system, null!);
+                        var panelLeft = new Panel(_system, null!);
                         panelLeft.IgnoreInteractions = true;
                         panelLeft.AutoHeight = true;
                         panelLeft.Size.X.SetPercents(50f);
                         panelLeft.Anchor = Anchor.AutoInlineLTR;
                         panel.AddChild(panelLeft);
 
-                        panelLeft.AddChild(new Paragraph(system, "Left Panel"));
-                        panelLeft.AddChild(new Button(system));
+                        panelLeft.AddChild(new Paragraph(_system, "Left Panel"));
+                        panelLeft.AddChild(new Button(_system));
                     }
                     {
-                        var panelRight = new Panel(system, null!);
+                        var panelRight = new Panel(_system, null!);
                         panelRight.IgnoreInteractions = true;
                         panelRight.AutoHeight = true;
                         panelRight.Size.X.SetPercents(50f);
                         panelRight.Anchor = Anchor.AutoInlineLTR;
                         panel.AddChild(panelRight);
 
-                        panelRight.AddChild(new Paragraph(system, "Right Panel"));
-                        panelRight.AddChild(new Button(system));
+                        panelRight.AddChild(new Paragraph(_system, "Right Panel"));
+                        panelRight.AddChild(new Button(_system));
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"You can add a small title to panels when you create them:"));
-                    panel.AddChild(new RowsSpacer(system, 2));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"You can add a small title to panels when you create them:"));
+                    panel.AddChild(new RowsSpacer(_system, 2));
                     {
-                        var titledPanel = new Panel(system);
+                        var titledPanel = new Panel(_system);
                         titledPanel.IgnoreInteractions = true;
                         titledPanel.AutoHeight = true;
                         titledPanel.Size.X.SetPercents(100f);
                         titledPanel.Anchor = Anchor.AutoLTR;
                         panel.AddChild(titledPanel);
 
-                        var title = new Paragraph(system, panelTitleStyle, "Panel Title");
+                        var title = new Paragraph(_system, panelTitleStyle, "Panel Title");
                         titledPanel.AddChild(title);
                         title.Anchor = Anchor.TopCenter;
                         title.Offset.Y.SetPixels(-26);
 
-                        titledPanel.AddChild(new Paragraph(system, "Looks nice, isn't it? Check out the source code to see how we did it."));
+                        titledPanel.AddChild(new Paragraph(_system, "Looks nice, isn't it? Check out the source code to see how we did it."));
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system,
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system,
                         @"This panel can be dragged by the way, lets try it out!
 The small box in the corner is draggable too:"));
                     panel.DraggableMode = DraggableMode.DraggableConfinedToScreen;
 
                     // create draggable small box
-                    var draggableBox = panel.AddChild(new Panel(system)
+                    var draggableBox = panel.AddChild(new Panel(_system)
                     {
                         DraggableMode = DraggableMode.DraggableConfinedToParent,
                         Anchor = Anchor.AutoRTL,
@@ -330,10 +331,10 @@ The small box in the corner is draggable too:"));
                 // buttons
                 {
                     var panel = CreateDemoContainer("Buttons", new Point(650, 1));
-                    panel.AddChild(new Paragraph(system, "Easily place buttons and register click events:"));
+                    panel.AddChild(new Paragraph(_system, "Easily place buttons and register click events:"));
                     {
                         int clicksCount = 0;
-                        var btn = panel.AddChild(new Button(system, "Click Me!"));
+                        var btn = panel.AddChild(new Button(_system, "Click Me!"));
                         btn.Events.OnClick += (Entity control) =>
                         {
                             clicksCount++;
@@ -341,29 +342,29 @@ The small box in the corner is draggable too:"));
                         };
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"Buttons can also function as checkboxes, allowing you to click on them to toggle their state (checked/unchecked):"));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"Buttons can also function as checkboxes, allowing you to click on them to toggle their state (checked/unchecked):"));
                     {
-                        var btn = panel.AddChild(new Button(system, "Toggle Me!"));
+                        var btn = panel.AddChild(new Button(_system, "Toggle Me!"));
                         btn.ToggleCheckOnClick = true;
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"And they can even function as a radio button, meaning only one button can be checked at any given time:"));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"And they can even function as a radio button, meaning only one button can be checked at any given time:"));
                     {
-                        var btn = panel.AddChild(new Button(system, "First Option"));
+                        var btn = panel.AddChild(new Button(_system, "First Option"));
                         btn.ToggleCheckOnClick = true;
                         btn.CanClickToUncheck = false;
                         btn.ExclusiveSelection = true;
                     }
                     {
-                        var btn = panel.AddChild(new Button(system, "Second Option"));
+                        var btn = panel.AddChild(new Button(_system, "Second Option"));
                         btn.ToggleCheckOnClick = true;
                         btn.CanClickToUncheck = false;
                         btn.ExclusiveSelection = true;
                     }
                     {
-                        var btn = panel.AddChild(new Button(system, "Third Option"));
+                        var btn = panel.AddChild(new Button(_system, "Third Option"));
                         btn.ToggleCheckOnClick = true;
                         btn.CanClickToUncheck = false;
                         btn.ExclusiveSelection = true;
@@ -373,7 +374,7 @@ The small box in the corner is draggable too:"));
                 // paragraphs
                 {
                     var panel = CreateDemoContainer("Paragraphs", new Point(650, 1));
-                    panel.AddChild(new Paragraph(system,
+                    panel.AddChild(new Paragraph(_system,
                         @$"${{FC:00FF00}}Paragraphs${{RESET}} are entities that draw text.
 They can be used as labels for buttons, titles, or long texts like the one you read now.
 
@@ -381,46 +382,52 @@ ${{FC:00FF00}}Paragraphs${{RESET}} support special ${{OC:FF0000}}style changing 
 
 You can change ${{FC:00FF00}}Fill Color${{RESET}}, ${{OC:AA0000}}Outline Color${{RESET}}, and ${{OW:0}}Outline Width${{RESET}}. 
 
-And you can even embed icons {smileyIcon} inside text paragraphs!"));
+And you can even embed icons {smileyIcon} inside text paragraphs!
 
+Another useful style command is used to align text (it doesn't even have to be mono-space font):
+
+Some Label:${{ XO:250 }}Some Value${{ XO: 450}}1
+Another Label:${{ XO: 250}}Another Value${{ XO: 450}}2
+
+PS: You can also change the way words wrap when exceeding the parent width."));
                 }
 
                 // checkbox and radio
                 {
                     var panel = CreateDemoContainer("Checkbox / Radio", new Point(680, 1));
                     
-                    panel.AddChild(new Paragraph(system, @"Basic Checkbox control:"));
-                    panel.AddChild(new Checkbox(system, "Checkbox Option 1"));
-                    panel.AddChild(new Checkbox(system, "Checkbox Option 2"));
-                    panel.AddChild(new Checkbox(system, "Checkbox Option 3"));
+                    panel.AddChild(new Paragraph(_system, @"Basic Checkbox control:"));
+                    panel.AddChild(new Checkbox(_system, "Checkbox Option 1"));
+                    panel.AddChild(new Checkbox(_system, "Checkbox Option 2"));
+                    panel.AddChild(new Checkbox(_system, "Checkbox Option 3"));
 
-                    panel.AddChild(new HorizontalLine(system));
+                    panel.AddChild(new HorizontalLine(_system));
 
-                    panel.AddChild(new Paragraph(system, @"Radio button controls:"));
-                    panel.AddChild(new RadioButton(system, "Radio Option 1")).Checked = true;
-                    panel.AddChild(new RadioButton(system, "Radio Option 2"));
-                    panel.AddChild(new RadioButton(system, "Radio Option 3"));
+                    panel.AddChild(new Paragraph(_system, @"Radio button controls:"));
+                    panel.AddChild(new RadioButton(_system, "Radio Option 1")).Checked = true;
+                    panel.AddChild(new RadioButton(_system, "Radio Option 2"));
+                    panel.AddChild(new RadioButton(_system, "Radio Option 3"));
                 }
 
                 // sliders
                 {
                     var panel = CreateDemoContainer("Sliders", new Point(680, 1));
 
-                    panel.AddChild(new Paragraph(system, @"Sliders are useful to select numeric values:"));
+                    panel.AddChild(new Paragraph(_system, @"Sliders are useful to select numeric values:"));
                     {
-                        var slider = panel.AddChild(new Slider(system));
-                        var label = panel.AddChild(new Label(system, @$"Slider Value: {slider.Value}"));
-                        panel.AddChild(new RowsSpacer(system, 2));
+                        var slider = panel.AddChild(new Slider(_system));
+                        var label = panel.AddChild(new Label(_system, @$"Slider Value: {slider.Value}"));
+                        panel.AddChild(new RowsSpacer(_system, 2));
                         slider.Events.OnValueChanged = (Entity control) => { label.Text = $"Slider Value: {slider.Value}"; };
                     }
 
-                    panel.AddChild(new Paragraph(system, @"Sliders can also be vertical:"));
+                    panel.AddChild(new Paragraph(_system, @"Sliders can also be vertical:"));
                     {
-                        var slider = panel.AddChild(new Slider(system, Orientation.Vertical));
+                        var slider = panel.AddChild(new Slider(_system, Orientation.Vertical));
 
                         slider.Size.Y.SetPixels(280);
                         slider.Offset.X.SetPixels(40);
-                        var label = panel.AddChild(new Label(system, @$"Slider Value: {slider.Value}"));
+                        var label = panel.AddChild(new Label(_system, @$"Slider Value: {slider.Value}"));
                         slider.Events.OnValueChanged = (Entity control) => { label.Text = $"Slider Value: {slider.Value}"; };
                     }
                 }
@@ -429,38 +436,38 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                 {
                     var panel = CreateDemoContainer("Progress Bars", new Point(680, 1));
 
-                    panel.AddChild(new Paragraph(system, @"Progress Bars are similar to sliders, but are designed to show progress or things like health bars:"));
+                    panel.AddChild(new Paragraph(_system, @"Progress Bars are similar to sliders, but are designed to show progress or things like health bars:"));
                     {
-                        var progressBar = panel.AddChild(new ProgressBar(system));
-                        var label = panel.AddChild(new Label(system, @$"Progress Bar Value: {progressBar.Value}"));
-                        panel.AddChild(new RowsSpacer(system));
+                        var progressBar = panel.AddChild(new ProgressBar(_system));
+                        var label = panel.AddChild(new Label(_system, @$"Progress Bar Value: {progressBar.Value}"));
+                        panel.AddChild(new RowsSpacer(_system));
                         float _timeForNextValueChange = 3f;
-                        progressBar.Events.AfterUpdate = (Entity control) =>
+                        progressBar.Events.AfterUpdate = (Entity entity) =>
                         {
-                            _timeForNextValueChange -= GUIMgr.System.LastDeltaTime;
+                            _timeForNextValueChange -= _system.LastDeltaTime;
                             if (_timeForNextValueChange <= 0f)
                             {
                                 progressBar.Value = Random.Shared.Next(progressBar.MaxValue);
                                 _timeForNextValueChange = 3f;
                             }
                         };
-                        progressBar.Events.OnValueChanged = (Entity control) => { label.Text = $"Progress Bar Value: {progressBar.Value}"; };
+                        progressBar.Events.OnValueChanged = (Entity entity) => { label.Text = $"Progress Bar Value: {progressBar.Value}"; };
                     }
 
-                    panel.AddChild(new Paragraph(system, @"By default Progress Bars are not interactable, but you can make them behave like sliders by settings 'IgnoreInteractions' to false:"));
+                    panel.AddChild(new Paragraph(_system, @"By default Progress Bars are not interactable, but you can make them behave like sliders by settings 'IgnoreInteractions' to false:"));
                     {
-                        var progressBar = panel.AddChild(new ProgressBar(system));
-                        var label = panel.AddChild(new Label(system, @$"Progress Bar Value: {progressBar.Value}"));
-                        panel.AddChild(new RowsSpacer(system));
+                        var progressBar = panel.AddChild(new ProgressBar(_system));
+                        var label = panel.AddChild(new Label(_system, @$"Progress Bar Value: {progressBar.Value}"));
+                        panel.AddChild(new RowsSpacer(_system));
                         progressBar.Handle.OverrideStyles.TintColor = new Color(255, 0, 0, 255);
                         progressBar.IgnoreInteractions = false;
-                        progressBar.Events.OnValueChanged = (Entity control) => { label.Text = $"Progress Bar Value: {progressBar.Value}"; };
+                        progressBar.Events.OnValueChanged = (Entity entity) => { label.Text = $"Progress Bar Value: {progressBar.Value}"; };
                     }
 
-                    panel.AddChild(new Paragraph(system, @"And finally, here's an alternative progress bar design, without animation:"));
+                    panel.AddChild(new Paragraph(_system, @"And finally, here's an alternative progress bar design, without animation:"));
                     {
-                        var progressBar = panel.AddChild(new ProgressBar(system, hProgressBarAltStyle, hProgressBarAltFillStyle));
-                        progressBar.Size.X.SetPixels(420 + 36);
+                        var progressBar = panel.AddChild(new ProgressBar(_system, hProgressBarAltStyle, hProgressBarAltFillStyle));
+                        progressBar.Size.X.SetPixels(280 + 24);
                         progressBar.MaxValue = 11;
                         progressBar.Value = 6;
                         progressBar.IgnoreInteractions = false;
@@ -476,11 +483,11 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                 {
                     var panel = CreateDemoContainer("List Box", new Point(680, 1));
 
-                    panel.AddChild(new Paragraph(system, @"List Boxes allow you to add items and select them from a list:"));
-                    panel.AddChild(new RowsSpacer(system));
+                    panel.AddChild(new Paragraph(_system, @"List Boxes allow you to add items and select them from a list:"));
+                    panel.AddChild(new RowsSpacer(_system));
                     {
-                        panel.AddChild(new Label(system, @"Select Race:"));
-                        var listbox = panel.AddChild(new ListBox(system));
+                        panel.AddChild(new Label(_system, @"Select Race:"));
+                        var listbox = panel.AddChild(new ListBox(_system));
                         listbox.AddItem("Human");
                         listbox.SetItemLabel("Human", new IconTexture() { TextureId = "Textures/Icons.png", SourceRect = new Rectangle(0, 0, 32, 32) }, true);
                         listbox.AddItem("Elf");
@@ -493,17 +500,17 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                         listbox.AllowDeselect = false;
                     }
                     {
-                        panel.AddChild(new Paragraph(system, @"Clear the selection by clicking the selected item again."));
-                        panel.AddChild(new RowsSpacer(system));
-                        panel.AddChild(new Label(system, @"Select Class:"));
-                        var listbox = panel.AddChild(new ListBox(system));
+                        panel.AddChild(new Paragraph(_system, @"Clear the selection by clicking the selected item again."));
+                        panel.AddChild(new RowsSpacer(_system));
+                        panel.AddChild(new Label(_system, @"Select Class:"));
+                        var listbox = panel.AddChild(new ListBox(_system));
                         listbox.AutoHeight = false;
                         listbox.Size.Y.SetPixels(250);
                         foreach (var val in dndClasses)
                         {
                             listbox.AddItem(val);
                         }
-                        var selectedParagraph = panel.AddChild(new Paragraph(system));
+                        var selectedParagraph = panel.AddChild(new Paragraph(_system));
                         selectedParagraph.Text = "Selected Class: None";
                         listbox.Events.OnValueChanged = (Entity control) =>
                         {
@@ -516,11 +523,11 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                 {
                     var panel = CreateDemoContainer("Drop Down", new Point(680, 1));
 
-                    panel.AddChild(new Paragraph(system, @"Drop Down entities are basically list boxes, but the list is hidden while not interacted with. For example:"));
-                    panel.AddChild(new RowsSpacer(system));
+                    panel.AddChild(new Paragraph(_system, @"Drop Down entities are basically list boxes, but the list is hidden while not interacted with. For example:"));
+                    panel.AddChild(new RowsSpacer(_system));
                     {
-                        panel.AddChild(new Label(system, @"Select Race:"));
-                        var dropdown = panel.AddChild(new DropDown(system));
+                        panel.AddChild(new Label(_system, @"Select Race:"));
+                        var dropdown = panel.AddChild(new DropDown(_system));
                         dropdown.DefaultSelectedText = "< Select Race >";
                         dropdown.AddItem("Human");
                         dropdown.SetItemLabel("Human", new IconTexture() { TextureId = "Textures/Icons.png", SourceRect = new Rectangle(0, 0, 32, 32) }, true);
@@ -538,17 +545,17 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                         dropdown.AutoHeight = true;
                     }
                     {
-                        panel.AddChild(new Paragraph(system, @"In the dropdown below, you can clear selection by clicking the selected item again."));
-                        panel.AddChild(new RowsSpacer(system));
-                        panel.AddChild(new Label(system, @"Select Class:"));
-                        var dropdown = panel.AddChild(new DropDown(system));
+                        panel.AddChild(new Paragraph(_system, @"In the dropdown below, you can clear selection by clicking the selected item again."));
+                        panel.AddChild(new RowsSpacer(_system));
+                        panel.AddChild(new Label(_system, @"Select Class:"));
+                        var dropdown = panel.AddChild(new DropDown(_system));
                         dropdown.SetVisibleItemsCount(7);
                         dropdown.DefaultSelectedText = "< Select Class >";
                         foreach (var val in dndClasses)
                         {
                             dropdown.AddItem(val);
                         }
-                        var selectedParagraph = panel.AddChild(new Paragraph(system));
+                        var selectedParagraph = panel.AddChild(new Paragraph(_system));
                         selectedParagraph.Text = "Selected Class: None";
                         dropdown.Events.OnValueChanged = (Entity control) =>
                         {
@@ -564,9 +571,9 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
 
                     // color slider
                     {
-                        panel.AddChild(new Paragraph(system, @"Color Slider entities can be used to get a color value from a range using a slider and a source texture:"));
-                        var slider = panel.AddChild(new ColorSlider(system));
-                        var value = panel.AddChild(new Label(system));
+                        panel.AddChild(new Paragraph(_system, @"Color Slider entities can be used to get a color value from a range using a slider and a source texture:"));
+                        var slider = panel.AddChild(new ColorSlider(_system));
+                        var value = panel.AddChild(new Label(_system));
                         slider.Events.OnValueChanged = (Entity control) =>
                         {
                             var color = slider.ColorValue;
@@ -576,7 +583,7 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                         slider.Value = 1;
 
                         {
-                            var colorBtn = panel.AddChild(new Button(system, "Red"));
+                            var colorBtn = panel.AddChild(new Button(_system, "Red"));
                             colorBtn.Anchor = Anchor.AutoLTR;
                             colorBtn.Size.X.SetPercents(24f);
                             colorBtn.Events.OnClick = (Entity control) =>
@@ -585,7 +592,7 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                             };
                         }
                         {
-                            var colorBtn = panel.AddChild(new Button(system, "Green"));
+                            var colorBtn = panel.AddChild(new Button(_system, "Green"));
                             colorBtn.Anchor = Anchor.AutoInlineLTR;
                             colorBtn.Size.X.SetPercents(24f);
                             colorBtn.Events.OnClick = (Entity control) =>
@@ -594,7 +601,7 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                             };
                         }
                         {
-                            var colorBtn = panel.AddChild(new Button(system, "Blue"));
+                            var colorBtn = panel.AddChild(new Button(_system, "Blue"));
                             colorBtn.Anchor = Anchor.AutoInlineLTR;
                             colorBtn.Size.X.SetPercents(24f);
                             colorBtn.Events.OnClick = (Entity control) =>
@@ -603,7 +610,7 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                             };
                         }
                         {
-                            var colorBtn = panel.AddChild(new Button(system, "Purple"));
+                            var colorBtn = panel.AddChild(new Button(_system, "Purple"));
                             colorBtn.Anchor = Anchor.AutoInlineLTR;
                             colorBtn.Size.X.SetPercents(24f);
                             colorBtn.Events.OnClick = (Entity control) =>
@@ -613,14 +620,14 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                         }
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new HorizontalLine(system));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new HorizontalLine(_system));
 
                     // color picker
                     {
-                        panel.AddChild(new Paragraph(system, @"Color Picker entities can be used to get a color value from a rectangle region by picking pixels off a source texture:"));
-                        var picker = panel.AddChild(new ColorPicker(system));
-                        var value = panel.AddChild(new Label(system));
+                        panel.AddChild(new Paragraph(_system, @"Color Picker entities can be used to get a color value from a rectangle region by picking pixels off a source texture:"));
+                        var picker = panel.AddChild(new ColorPicker(_system));
+                        var value = panel.AddChild(new Label(_system));
                         picker.Events.OnValueChanged = (Entity control) =>
                         {
                             var color = picker.ColorValue;
@@ -629,7 +636,7 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                         };
 
                         {
-                            var colorBtn = panel.AddChild(new Button(system, "Red"));
+                            var colorBtn = panel.AddChild(new Button(_system, "Red"));
                             colorBtn.Anchor = Anchor.AutoLTR;
                             colorBtn.Size.X.SetPercents(24f);
                             colorBtn.Events.OnClick = (Entity control) =>
@@ -638,7 +645,7 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                             };
                         }
                         {
-                            var colorBtn = panel.AddChild(new Button(system, "Green"));
+                            var colorBtn = panel.AddChild(new Button(_system, "Green"));
                             colorBtn.Anchor = Anchor.AutoInlineLTR;
                             colorBtn.Size.X.SetPercents(24f);
                             colorBtn.Events.OnClick = (Entity control) =>
@@ -647,7 +654,7 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                             };
                         }
                         {
-                            var colorBtn = panel.AddChild(new Button(system, "Blue"));
+                            var colorBtn = panel.AddChild(new Button(_system, "Blue"));
                             colorBtn.Anchor = Anchor.AutoInlineLTR;
                             colorBtn.Size.X.SetPercents(24f);
                             colorBtn.Events.OnClick = (Entity control) =>
@@ -656,7 +663,7 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                             };
                         }
                         {
-                            var colorBtn = panel.AddChild(new Button(system, "Purple"));
+                            var colorBtn = panel.AddChild(new Button(_system, "Purple"));
                             colorBtn.Anchor = Anchor.AutoInlineLTR;
                             colorBtn.Size.X.SetPercents(24f);
                             colorBtn.Events.OnClick = (Entity control) =>
@@ -672,22 +679,22 @@ And you can even embed icons {smileyIcon} inside text paragraphs!"));
                     var panel = CreateDemoContainer("Scrollbars", new Point(780, 450));
                     panel.AutoHeight = false;
                     panel.CreateVerticalScrollbar(true);
-                    panel.AddChild(new Paragraph(system,
+                    panel.AddChild(new Paragraph(_system,
                         @"Sometimes panels content is too long, and we need scrollbars to show everything.
 This panel has some random controls below that go wayyyy down.
 
 Use the scrollbar on the right to see more of it.
 "));
-                    panel.AddChild(new Button(system, "Some Button"));
-                    panel.AddChild(new Paragraph(system,
+                    panel.AddChild(new Button(_system, "Some Button"));
+                    panel.AddChild(new Paragraph(_system,
                         @"
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 "));
-                    panel.AddChild(new Button(system, "Another Button"));
-                    panel.AddChild(new Slider(system));
-                    panel.AddChild(new Checkbox(system, "A Checkbox"));
-                    panel.AddChild(new RadioButton(system, "A Radio Button"));
-                    var listbox = panel.AddChild(new ListBox(system));
+                    panel.AddChild(new Button(_system, "Another Button"));
+                    panel.AddChild(new Slider(_system));
+                    panel.AddChild(new Checkbox(_system, "A Checkbox"));
+                    panel.AddChild(new RadioButton(_system, "A Radio Button"));
+                    var listbox = panel.AddChild(new ListBox(_system));
                     listbox.AddItem("Human");
                     listbox.AddItem("Elf");
                     listbox.AddItem("Orc");
@@ -699,16 +706,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                 {
                     var panel = CreateDemoContainer("Text Input", new Point(680, 1));
 
-                    panel.AddChild(new Paragraph(system, @"Text Input entity is useful to get free text input from users. This is a single-line text input:"));
+                    panel.AddChild(new Paragraph(_system, @"Text Input entity is useful to get free text input from users. This is a single-line text input:"));
                     {
-                        var textInput = panel.AddChild(new TextInput(system));
+                        var textInput = panel.AddChild(new TextInput(_system));
                         textInput.PlaceholderText = "Click to edit text input.";
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"And here's a multiline text input:"));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"And here's a multiline text input:"));
                     {
-                        var textInput = panel.AddChild(new TextInput(system));
+                        var textInput = panel.AddChild(new TextInput(_system));
                         textInput.PlaceholderText = "A multiline text input..\nClick to edit.";
                         textInput.Size.Y.SetPixels(300);
                         textInput.Multiline = true;
@@ -716,13 +723,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                         textInput.CreateVerticalScrollbar();
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"You can also mask the text, for password input:"));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"You can also mask the text, for password input:"));
                     {
-                        var textInput = panel.AddChild(new TextInput(system));
+                        var textInput = panel.AddChild(new TextInput(_system));
                         textInput.PlaceholderText = "Password";
                         textInput.MaskingCharacter = '*';
-                        var showPassword = panel.AddChild(new Checkbox(system, "Show Password"));
+                        var showPassword = panel.AddChild(new Checkbox(_system, "Show Password"));
                         showPassword.Events.OnValueChanged = (Entity control) =>
                         {
                             textInput.MaskingCharacter = showPassword.Checked ? null : '*';
@@ -734,51 +741,109 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                 {
                     var panel = CreateDemoContainer("Numeric Input", new Point(680, 1));
 
-                    panel.AddChild(new Paragraph(system, @"Numeric text input get float or integer value from the user in a form similar to a text input. For example, with decimal point:"));
+                    panel.AddChild(new Paragraph(_system, @"Numeric text input gets a float or integer value from the user in a form similar to a text input. For example, with a decimal point:"));
                     {
-                        var textInput = panel.AddChild(new NumericInput(system));
+                        var textInput = panel.AddChild(new NumericInput(_system));
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"This Numeric Input don't accept a decimal point:"));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"This Numeric Input doesn't accept a decimal point:"));
                     {
-                        var textInput = panel.AddChild(new NumericInput(system));
+                        var textInput = panel.AddChild(new NumericInput(_system));
                         textInput.AcceptsDecimal = false;
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"This Numeric Input has min and max limits (-10, 10):"));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"This Numeric Input has min and max limits (-10, 10):"));
                     {
-                        var textInput = panel.AddChild(new NumericInput(system));
+                        var textInput = panel.AddChild(new NumericInput(_system));
                         textInput.MinValue = -10;
                         textInput.MaxValue = 10;
                     }
 
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"You can also create a Numeric Input entity without the buttons:"));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"You can also create a Numeric Input entity without the buttons:"));
                     {
-                        var textInput = panel.AddChild(new NumericInput(system, false, false));
+                        var textInput = panel.AddChild(new NumericInput(_system, false, false));
+                    }
+
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"Numeric Input can also have a different culture:"));
+                    {
+                        string[] exampleCultures = ["en-US", "de-DE"];
+
+                        foreach (var cultureName in exampleCultures)
+                        {
+                            var textInput = panel.AddChild(new NumericInput(_system));
+                            textInput.Anchor = Anchor.AutoInlineLTR;
+                            textInput.Size.X = new Measurement() { Units = MeasureUnit.PercentOfParent, Value = 60f };
+                            textInput.CultureInfo = CultureInfo.GetCultureInfo(cultureName);
+                            textInput.DefaultValue = (decimal)5.67f;
+                            var label = panel.AddChild(new Paragraph(_system, $"\n ({cultureName})"));
+                            label.Anchor = Anchor.AutoInlineLTR;
+                            label.Offset.Y.SetPixels(-10);
+                            panel.AddChild(new RowsSpacer(_system, 1));
+                        }
                     }
                 }
 
                 // message boxes
                 {
                     var panel = CreateDemoContainer("Message Boxes", new Point(780, 1));
-                    panel.AddChild(new Paragraph(system, @"Message boxes are useful to get quick input from the user. 
-Click below to see an example."));
+                    panel.AddChild(new Paragraph(_system, @"Message boxes are useful to get quick input from the user. Iguina comes with a utility to generate common message boxes.
 
-                    panel.AddChild(new Button(system, "Show Message Box")).Events.OnClick = (Entity control) =>
+Click below to see some examples."
+                    ));
+
+                    panel.AddChild(new Button(_system, "Show Info Message Box")).Events.OnClick = (Entity entity) =>
                     {
-                        system.MessageBoxes.ShowConfirmMessageBox("Hi There!",
+                        _system.MessageBoxes.ShowInfoMessageBox("Info Message Box",
+                            @"This is an info message box with just a confirm button.
+
+Note that message boxes can have their own stylesheets, and you can set their defaults per-system.
+
+This specific message box won't do much.
+You can just close it."
+                        );
+                    };
+
+                    panel.AddChild(new Button(_system, "Show Confirmation Message Box")).Events.OnClick = (Entity entity) =>
+                    {
+                        _system.MessageBoxes.ShowConfirmMessageBox("Confirmation Message Box",
                             @"This is a simple message box with just confirm / cancel options.
 
 Note that message boxes can have their own stylesheets, and you can set their defaults per-system.
 
 This specific message box won't do much.
-You can just close it.");
+You can just close it."
+                        );
                     };
 
-                    panel.AddChild(new RowsSpacer(system));
+                    panel.AddChild(new Button(_system, "Show Save File Dialog")).Events.OnClick = (Entity entity) =>
+                    {
+                        _system.MessageBoxes.ShowSaveFileDialog("Save File Dialog",
+                            @"This is an interactive save file dialog box.
+Don't worry, nothing will actually be saved / written, feel free to play around.",
+                            (string filename) =>
+                            {
+                                _system.MessageBoxes.ShowInfoMessageBox("Success!", $"Selected file: '{filename}'.");
+                                return true;
+                            });
+                    };
+
+                    panel.AddChild(new Button(_system, "Show Open File Dialog")).Events.OnClick = (Entity entity) =>
+                    {
+                        _system.MessageBoxes.ShowOpenFileDialog("Open File Dialog",
+                            @"This is an interactive open file dialog box.
+Don't worry, nothing will actually be opened, feel free to play around.",
+                            (string filename) =>
+                            {
+                                _system.MessageBoxes.ShowInfoMessageBox("Success!", $"Selected file: '{filename}'.");
+                                return true;
+                            });
+                    };
+
+                    panel.AddChild(new RowsSpacer(_system));
                 }
 
                 // locked / disabled
@@ -786,20 +851,20 @@ You can just close it.");
                     var panel = CreateDemoContainer("Locked / Disabled", new Point(900, 600));
                     panel.AutoHeight = false;
                     panel.CreateVerticalScrollbar();
-                    panel.AddChild(new Paragraph(system, @"You can disable controls to make them ignore user interactions and render them with 'disabled' effect (you can create your own effects for this):"));
-                    panel.AddChild(new Button(system, "Disabled Button") { Enabled = false });
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"When you disable a panel, all controls under it will be disabled too.
+                    panel.AddChild(new Paragraph(_system, @"You can disable controls to make them ignore user interactions and render them with 'disabled' effect (you can create your own effects for this):"));
+                    panel.AddChild(new Button(_system, "Disabled Button") { Enabled = false });
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"When you disable a panel, all controls under it will be disabled too.
 
 If you want to just lock items without rendering them with 'disabled' style, you can also set the Locked property. For example the following button is locked, but will render normally:"));
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Button(system, "Locked Button") { Locked = true });
-                    panel.AddChild(new RowsSpacer(system));
-                    panel.AddChild(new Paragraph(system, @"Any type of control can be locked and disabled:"));
-                    panel.AddChild(new Slider(system) { Enabled = false });
-                    panel.AddChild(new Checkbox(system, "Disabled Checkbox") { Enabled = false });
-                    panel.AddChild(new RadioButton(system, "Disabled Radio Button") { Enabled = false });
-                    var listbox = panel.AddChild(new ListBox(system));
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Button(_system, "Locked Button") { Locked = true });
+                    panel.AddChild(new RowsSpacer(_system));
+                    panel.AddChild(new Paragraph(_system, @"Any type of control can be locked and disabled:"));
+                    panel.AddChild(new Slider(_system) { Enabled = false });
+                    panel.AddChild(new Checkbox(_system, "Disabled Checkbox") { Enabled = false });
+                    panel.AddChild(new RadioButton(_system, "Disabled Radio Button") { Enabled = false });
+                    var listbox = panel.AddChild(new ListBox(_system));
                     listbox.AddItem("Human");
                     listbox.AddItem("Elf");
                     listbox.AddItem("Orc");
@@ -814,7 +879,7 @@ If you want to just lock items without rendering them with 'disabled' style, you
                     panel.StyleSheet = new StyleSheet();
 
                     // add title and text
-                    panel.AddChild(new Paragraph(system, $@"That was only the GUI-DEMO! There is still much to learn about ${{FC:FFDB5F}}Mono${{FC:e60000}}Go${{RESET}}.
+                    panel.AddChild(new Paragraph(_system, $@"That was only the GUI-DEMO! There is still much to learn about ${{FC:FFDB5F}}Mono${{FC:e60000}}Go${{RESET}}.
 
 Try more samples by clicking the ${{FC:FFDB5F}}Next${{RESET}} button below.
 
