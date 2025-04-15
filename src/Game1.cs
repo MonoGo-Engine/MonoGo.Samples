@@ -3,9 +3,11 @@ using MonoGo.Engine;
 using MonoGo.Engine.Drawing;
 using MonoGo.Engine.Enums;
 using MonoGo.Engine.Resources;
+using MonoGo.Iguina;
 using MonoGo.Resources;
 using MonoGo.Tiled;
 using MonoGo.Tiled.MapStructure;
+using System.IO;
 
 namespace MonoGo.Samples
 {
@@ -43,6 +45,8 @@ namespace MonoGo.Samples
             var fontSprite = ResourceHub.GetResource<Sprite>("DemoSprites", "Font");
             var fontBox = ResourceHub.GetResourceBox(nameof(EngineResources.Fonts)) as ResourceBox<IFont>;
             fontBox.AddResource("FancyFont", new TextureFont(fontSprite, 1, 1, TextureFont.Ascii, false));
+
+            GUIMgr.Init(Path.Combine(ResourceInfoMgr.ContentDir, "Engine/GUI"), "MonoGoTheme");
         }
 
         /// <summary>

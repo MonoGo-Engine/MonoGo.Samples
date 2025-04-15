@@ -1,19 +1,23 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Iguina.Defs;
+using Iguina.Entities;
+using Microsoft.Xna.Framework;
 using MonoGo.Engine;
 using MonoGo.Engine.Particles;
-using MonoGo.Engine.UI;
-using MonoGo.Engine.UI.Controls;
-using MonoGo.Engine.UI.Defs;
+using MonoGo.Iguina;
 
 namespace MonoGo.Samples.Misc
 {
-    public class CustomParticleEffectComponent : ParticleEffectComponent, IHaveGUI
+    public class CustomParticleEffectComponent : GUIComponent
     {
+        public ParticleEffectComponent ParticleEffectComponent;
+        public ParticleEffect ParticleEffect;
+
         private Paragraph _activeParticlesParagraph;
 
-        public CustomParticleEffectComponent(ParticleEffect particleEffect, Vector2 position) 
-            : base(particleEffect, position)
+        public CustomParticleEffectComponent(ParticleEffect particleEffect)
         {
+            ParticleEffectComponent = new ParticleEffectComponent(particleEffect, GameMgr.WindowManager.CanvasCenter);
+            ParticleEffect = particleEffect;
         }
 
         public override void Update()
@@ -27,17 +31,19 @@ namespace MonoGo.Samples.Misc
             }
         }
 
-        public void CreateUI()
+        public override void CreateUI()
         {
-            var topPanel = new Panel(null!)
+            base.CreateUI();
+
+            var topPanel = new Panel(GUIMgr.System, null!)
             {
                 Anchor = Anchor.TopCenter,
                 IgnoreInteractions = true
             };
             topPanel.Size.Y.SetPixels(60);
-            UISystem.Add(topPanel);
+            AddGUIEntity(topPanel);
 
-            _activeParticlesParagraph = new Paragraph("")
+            _activeParticlesParagraph = new Paragraph(GUIMgr.System, "")
             {
                 Anchor = Anchor.Center
             };

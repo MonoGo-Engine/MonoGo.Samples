@@ -43,14 +43,15 @@ namespace MonoGo.Samples.Demos
                 }
             };
 
-            var cParticleEffect = new CustomParticleEffectComponent(particleEffect, GameMgr.WindowManager.CanvasCenter) 
+            var cCustomParticleEffect = new CustomParticleEffectComponent(particleEffect)
             {
-                Depth = 1 
+                Depth = 1
             };
 
             var player = new Player(layer, new Vector2(400, 300));
-            player.AddComponentToTop(cParticleEffect);
-            cParticleEffect.AttractParticlesTo(player.GetComponent<PositionComponent>());
+            player.AddComponentToTop(cCustomParticleEffect.ParticleEffectComponent);
+            player.AddComponent(cCustomParticleEffect);
+            cCustomParticleEffect.ParticleEffectComponent.AttractParticlesTo(player.GetComponent<PositionComponent>());
 
             new ParticleEditorEntity(layer);
         }

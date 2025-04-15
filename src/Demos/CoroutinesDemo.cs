@@ -3,7 +3,6 @@ using MonoGo.Engine;
 using MonoGo.Engine.Drawing;
 using MonoGo.Engine.EC;
 using MonoGo.Engine.SceneSystem;
-using MonoGo.Engine.Utils;
 using MonoGo.Engine.Utils.Coroutines;
 using MonoGo.Samples.Misc;
 using System.Collections;

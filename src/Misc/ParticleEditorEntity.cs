@@ -1,21 +1,20 @@
-﻿using Microsoft.Xna.Framework;
-using MonoGo.Engine;
-using MonoGo.Engine.EC;
+﻿using Iguina.Defs;
+using Iguina.Entities;
+using Microsoft.Xna.Framework;
 using MonoGo.Engine.Particles;
 using MonoGo.Engine.Particles.Modifiers;
 using MonoGo.Engine.SceneSystem;
-using MonoGo.Engine.UI;
-using MonoGo.Engine.UI.Controls;
-using MonoGo.Engine.UI.Defs;
+using MonoGo.Iguina;
 using System.Linq;
+using Point = Iguina.Defs.Point;
 
 namespace MonoGo.Samples.Misc
 {
-    public class ParticleEditorEntity : Entity, IHaveGUI
+    public class ParticleEditorEntity : GUIEntity
     {
         public ParticleEffectComponent ParticleEffectComponent { get; set; }
 
-        public ParticleEditorEntity(Layer layer) : base(layer) 
+        public ParticleEditorEntity(Layer layer) : base(layer)
         {
             Visible = false;
         }
@@ -67,15 +66,18 @@ namespace MonoGo.Samples.Misc
             }
         }
 
-        public void CreateUI()
+        public override void CreateUI()
         {
+            base.CreateUI();
+
             var player = Layer.FindEntity<Player>();
-            ParticleEffectComponent = player.GetComponent<CustomParticleEffectComponent>();
+            ParticleEffectComponent = player.GetComponent<ParticleEffectComponent>();
             CheckParticleAttraction(player);
 
             // Controls
-            var firstPanel = new Panel(null!)
+            var firstPanel = new Panel(GUIMgr.System, null!)
             {
+                Identifier = "extra",
                 Anchor = Anchor.AutoLTR,
                 AutoHeight = false,
                 OverflowMode = OverflowMode.AllowOverflow
@@ -84,45 +86,45 @@ namespace MonoGo.Samples.Misc
             firstPanel.Size.Y.SetPixels(64);
             SceneSwitcher.DescriptionPanel.AddChild(firstPanel);
             {
-                var checkbox = new Checkbox("Enabled") { Anchor = Anchor.AutoLTR, Checked = ParticleEffectComponent.Enabled };
+                var checkbox = new Checkbox(GUIMgr.System, "Enabled") { Anchor = Anchor.AutoLTR, Checked = ParticleEffectComponent.Enabled };
                 checkbox.Size.X.SetPercents(20);
-                checkbox.Events.OnValueChanged = (Control control) =>
+                checkbox.Events.OnValueChanged = (Entity control) =>
                 {
                     ParticleEffectComponent.Enabled = !ParticleEffectComponent.Enabled;
                 };
                 firstPanel.AddChild(checkbox);
             }
             {
-                var checkbox = new Checkbox("Visible") { Anchor = Anchor.AutoInlineLTR, Checked = ParticleEffectComponent.Visible };
+                var checkbox = new Checkbox(GUIMgr.System, "Visible") { Anchor = Anchor.AutoInlineLTR, Checked = ParticleEffectComponent.Visible };
                 checkbox.Size.X.SetPercents(20);
-                checkbox.Events.OnValueChanged = (Control control) =>
+                checkbox.Events.OnValueChanged = (Entity control) =>
                 {
                     ParticleEffectComponent.Visible = !ParticleEffectComponent.Visible;
                 };
                 firstPanel.AddChild(checkbox);
             }
             {
-                var checkbox = new Checkbox("Follow") { Anchor = Anchor.AutoInlineLTR, Checked = ParticleEffectComponent.FollowOwner };
+                var checkbox = new Checkbox(GUIMgr.System, "Follow") { Anchor = Anchor.AutoInlineLTR, Checked = ParticleEffectComponent.FollowOwner };
                 checkbox.Size.X.SetPercents(20);
-                checkbox.Events.OnValueChanged = (Control control) =>
+                checkbox.Events.OnValueChanged = (Entity control) =>
                 {
                     ParticleEffectComponent.ToggleFollowOwner();
                 };
                 firstPanel.AddChild(checkbox);
             }
             {
-                var checkbox = new Checkbox("Attract") { Anchor = Anchor.AutoInlineLTR, Checked = player.AttractParticles };
+                var checkbox = new Checkbox(GUIMgr.System, "Attract") { Anchor = Anchor.AutoInlineLTR, Checked = player.AttractParticles };
                 checkbox.Size.X.SetPercents(20);
-                checkbox.Events.OnValueChanged = (Control control) =>
+                checkbox.Events.OnValueChanged = (Entity control) =>
                 {
                     ToggleAttract();
                 };
                 firstPanel.AddChild(checkbox);
             }
             {
-                var checkbox = new Checkbox("Inside") { Anchor = Anchor.AutoInlineLTR, Checked = player.InsideParticles };
+                var checkbox = new Checkbox(GUIMgr.System, "Inside") { Anchor = Anchor.AutoInlineLTR, Checked = player.InsideParticles };
                 checkbox.Size.X.SetPercents(20);
-                checkbox.Events.OnValueChanged = (Control control) =>
+                checkbox.Events.OnValueChanged = (Entity control) =>
                 {
                     ToggleInside();
                 };
@@ -132,8 +134,9 @@ namespace MonoGo.Samples.Misc
             // OFFSET, SPEED
             // left panel
             {
-                var panel = new Panel(null!)
+                var panel = new Panel(GUIMgr.System, null!)
                 {
+                    Identifier = "extra",
                     Anchor = Anchor.AutoLTR
                 };
                 panel.OverrideStyles.MarginBefore = Point.Zero;
@@ -141,58 +144,60 @@ namespace MonoGo.Samples.Misc
                 panel.Size.X.SetPercents(33);
                 SceneSwitcher.DescriptionPanel.AddChild(panel);
 
-                var numinput = new NumericInput();
+                var numinput = new NumericInput(GUIMgr.System);
                 numinput.Size.Y.SetPixels(64);
-                numinput.Events.OnValueChanged = (Control control) =>
+                numinput.Events.OnValueChanged = (Entity control) =>
                 {
                     OffsetX((float)numinput.NumericValue);
                 };
                 panel.AddChild(numinput);
-                panel.AddChild(new Label("Offset: X"));
+                panel.AddChild(new Label(GUIMgr.System, "Offset: X"));
             }
             // center panel
             {
-                var panel = new Panel(null!)
+                var panel = new Panel(GUIMgr.System, null!)
                 {
+                    Identifier = "extra",
                     Anchor = Anchor.AutoInlineLTR
                 };
                 panel.Size.Y.SetPixels(72);
                 panel.Size.X.SetPercents(33);
                 SceneSwitcher.DescriptionPanel.AddChild(panel);
 
-                var numinput = new NumericInput
+                var numinput = new NumericInput(GUIMgr.System)
                 {
                     Anchor = Anchor.AutoInlineLTR
                 };
                 numinput.Size.Y.SetPixels(64);
-                numinput.Events.OnValueChanged = (Control control) =>
+                numinput.Events.OnValueChanged = (Entity control) =>
                 {
                     OffsetY((float)numinput.NumericValue);
                 };
                 panel.AddChild(numinput);
-                panel.AddChild(new Label("Offest:Y"));
+                panel.AddChild(new Label(GUIMgr.System, "Offest:Y"));
             }
             // right panel
             {
-                var panel = new Panel(null!)
+                var panel = new Panel(GUIMgr.System, null!)
                 {
+                    Identifier = "extra",
                     Anchor = Anchor.AutoInlineLTR
                 };
                 panel.Size.Y.SetPixels(72);
                 panel.Size.X.SetPercents(33);
                 SceneSwitcher.DescriptionPanel.AddChild(panel);
 
-                var numinput = new NumericInput
+                var numinput = new NumericInput(GUIMgr.System)
                 {
                     Anchor = Anchor.AutoInlineLTR
                 };
                 numinput.Size.Y.SetPixels(64);
-                numinput.Events.OnValueChanged = (Control control) =>
+                numinput.Events.OnValueChanged = (Entity control) =>
                 {
                     Speed((float)numinput.NumericValue);
                 };
                 panel.AddChild(numinput);
-                panel.AddChild(new Label("Speed"));
+                panel.AddChild(new Label(GUIMgr.System, "Speed"));
             }
         }
     }
